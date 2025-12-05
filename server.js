@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
-const methodOverride = require("method-override"); // new
-const morgan = require("morgan"); //new
+const methodOverride = require("method-override");
+const morgan = require("morgan");
+const path = require("path");
 const Fruit = require('./models/fruit.js');
 
 const dotenv = require("dotenv"); // require package
@@ -15,9 +16,11 @@ mongoose.connection.on("connected", () => {
 
 
 app.use(express.urlencoded({ extended: false }));
+app.use(methodOverride("_method"));
+//app.use(morgan("dev"));
 
-app.use(methodOverride("_method")); // new
-app.use(morgan("dev")); //new
+app.use(express.static(path.join(__dirname, "public")));
+
 
 // POST /fruits
 app.post("/fruits", async (req, res) => {
